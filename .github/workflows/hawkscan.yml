@@ -14,12 +14,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install Node.js 14.x
         uses: actions/setup-node@v3
         with:
           node-version: 14
           cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '21'
 
       - name: Install dependencies
         run: npm install
