@@ -51,3 +51,11 @@ jobs:
           apiKey: ${{ secrets.HAWK_API_KEY }}
           codeScanningAlerts: true
           githubToken: ${{ github.token }}
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          # Path to SARIF file relative to the root of the repository
+          sarif_file: stackhawk.sarif
+          # Optional category for the results
+          # Used to differentiate multiple results for one commit
+          category: StackHawk
