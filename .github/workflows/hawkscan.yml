@@ -10,14 +10,14 @@ on:
 
 jobs:
   build-and-test:
-    permissions:
-      # required for all workflows
-      security-events: write
-      # required to fetch internal or private CodeQL packs
-      packages: read
-      # only required for workflows in private repositories
-      actions: read
-      contents: read
+    # permissions:
+    #   # required for all workflows
+    #   security-events: write
+    #   # required to fetch internal or private CodeQL packs
+    #   packages: read
+    #   # only required for workflows in private repositories
+    #   actions: read
+    #   contents: read
     name: Build and Test
     runs-on: ubuntu-latest
     steps:
@@ -44,6 +44,7 @@ jobs:
           HAWK_ENV: GitHub Actions
           COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
           BRANCH_NAME: ${{ github.head_ref }}
+          SARIF_ARTIFACT: true
         continue-on-error: true
         uses: stackhawk/hawkscan-action@v2
         with:
