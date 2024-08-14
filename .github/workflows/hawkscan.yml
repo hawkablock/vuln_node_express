@@ -10,6 +10,14 @@ on:
 
 jobs:
   build-and-test:
+    permissions:
+      # required for all workflows
+      security-events: write
+      # required to fetch internal or private CodeQL packs
+      packages: read
+      # only required for workflows in private repositories
+      actions: read
+      contents: read
     name: Build and Test
     runs-on: ubuntu-latest
     steps:
