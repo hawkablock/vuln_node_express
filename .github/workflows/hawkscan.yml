@@ -51,6 +51,12 @@ jobs:
           apiKey: ${{ secrets.HAWK_API_KEY }}
           codeScanningAlerts: true
           githubToken: ${{ github.token }}
+      - name: Verify SARIF file
+        run: |
+          ls stackhawk.sarif
+          md5 stackhawk.sarif
+          echo === vvv stackhawk.sarif contents vvv ===
+          cat stackhawk.sarif
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v3
         with:
