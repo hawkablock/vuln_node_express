@@ -1,21 +1,20 @@
 name: HawkScan
 
 on:
-  push: 
+  push:
     branches:
       - main
+      - quickscan
+
   pull_request:
     branches:
       - main
-
+      
 jobs:
   build-and-test:
-    permissions:
-      # required for all workflows
+    permissions:      
       security-events: write
-      # required to fetch internal or private CodeQL packs
       packages: read
-      # only required for workflows in private repositories
       actions: read
       contents: read
     name: Build and Test
@@ -23,22 +22,28 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Install Node.js 14.x
+
+      - name: Install Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 14
           cache: npm
-      - uses: actions/setup-java@v4
+
+      - name: Install Java
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '21'
+          java-version: '17'
 
       - name: Install dependencies
         run: npm install
+
       - name: Run unit tests
         run: npm test
+
       - name: Run Vuln Node Express
         run: npm run start &
+
       - name: Run HawkScan
         env:
           HAWK_ENV: GitHub Actions
@@ -49,18 +54,17 @@ jobs:
         uses: stackhawk/hawkscan-action@v2
         with:
           apiKey: ${{ secrets.HAWK_API_KEY }}
-          codeScanningAlerts: true
+          # codeScanningAlerts: true
           githubToken: ${{ github.token }}
+
       - name: Verify SARIF file
         run: |
           ls stackhawk.sarif || true
           echo === vvv stackhawk.sarif contents vvv === || true
           cat stackhawk.sarif || true
+
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v3
         with:
-          # Path to SARIF file relative to the root of the repository
           sarif_file: stackhawk.sarif
-          # Optional category for the results
-          # Used to differentiate multiple results for one commit
-          category: StackHawk
+          category: StackHawk    # Optional category for the results
