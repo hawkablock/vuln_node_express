@@ -1,5 +1,5 @@
 app:
-  applicationId: 77501689-6975-43be-a9a4-ad88ded86f03 # (required)
+  applicationId: ${APP_ID:77501689-6975-43be-a9a4-ad88ded86f03} # (required)
   env: ${HAWK_ENV:Development} # (required)
   host: http://localhost:3000 # (required)
 
