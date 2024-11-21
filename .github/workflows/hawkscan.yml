@@ -17,7 +17,7 @@ jobs:
       actions: read
       contents: read
     name: Build and Test
-    runs-on: github-22.04
+    runs-on: unbuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
