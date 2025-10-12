@@ -9,6 +9,9 @@ on:
     branches:
       - main
 
+  schedule:
+    - cron: '0 7 * * 1,4' #7a Mountain Monday and Thursday
+
 jobs:
   build-and-test:
     permissions:      
@@ -22,26 +25,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 14
-          cache: npm
+      - name: Set up Docker
+        uses: docker/setup-docker-action@v4
 
-      - name: Install Java
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '17'
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run unit tests
-        run: npm test
-
-      - name: Run Vuln Node Express
-        run: npm run start &
+      - name: Build and run vuln-node-express (Docker)
+        run: docker compose up --detach
 
       - name: Run HawkScan
         env:
