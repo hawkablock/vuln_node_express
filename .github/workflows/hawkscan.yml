@@ -20,7 +20,7 @@ jobs:
       actions: read
       contents: read
     name: Build and Test
-    runs-on: ubuntu-latest
+    runs-on: unbuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
